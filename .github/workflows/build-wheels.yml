@@ -71,7 +71,12 @@ jobs:
           if (!(mamba list cuda)[-1].contains('cuda')) {throw 'CUDA Toolkit failed to install!'}
           
           python -m pip install --upgrade build setuptools wheel packaging ninja torch==${{ matrix.torchver }} psutil --extra-index-url "https://download.pytorch.org/whl/cu124"
-          python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp311-cp311-win_amd64.whl
+
+          if (${{ matrix.pyver }} -eq "3.11") {
+            python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp311-cp311-win_amd64.whl
+          } elseif (${{ matrix.pyver }} -eq "3.10") {
+            python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp310-cp310-win_amd64.whl
+          }
 
       - name: Build Wheel
         id: build-wheel
