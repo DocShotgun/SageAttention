@@ -50,7 +50,7 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Setup Mamba
-        uses: conda-incubator/setup-miniconda@v3.3.1
+        uses: conda-incubator/setup-miniconda@3.3.1
         with:
           activate-environment: "build"
           python-version: ${{ matrix.pyver }}
