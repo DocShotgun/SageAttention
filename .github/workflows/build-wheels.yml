@@ -72,12 +72,22 @@ jobs:
           
           python -m pip install --upgrade build setuptools wheel packaging ninja torch==${{ matrix.torchver }} psutil --extra-index-url "https://download.pytorch.org/whl/cu124"
 
-          if (${{ matrix.pyver }} -eq "3.10") {
-            python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp310-cp310-win_amd64.whl
-          } elseif (${{ matrix.pyver }} -eq "3.11") {
-            python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp311-cp311-win_amd64.whl
-          } elseif (${{ matrix.pyver }} -eq "3.12") {
-            python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post5/triton-3.1.0-cp312-cp312-win_amd64.whl
+          if (${{ matrix.torchver }} -eq "2.5.1") {
+            if (${{ matrix.pyver }} -eq "3.10") {
+              python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post9/triton-3.1.0-cp310-cp310-win_amd64.whl
+            } elseif (${{ matrix.pyver }} -eq "3.11") {
+              python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post9/triton-3.1.0-cp311-cp311-win_amd64.whl
+            } elseif (${{ matrix.pyver }} -eq "3.12") {
+              python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.1.0-windows.post9/triton-3.1.0-cp312-cp312-win_amd64.whl
+            }
+          } elseif (${{ matrix.torchver }} -eq "2.6.0") {
+            if (${{ matrix.pyver }} -eq "3.10") {
+              python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.2.0-windows.post9/triton-3.2.0-cp310-cp310-win_amd64.whl
+            } elseif (${{ matrix.pyver }} -eq "3.11") {
+              python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.2.0-windows.post9/triton-3.2.0-cp311-cp311-win_amd64.whl
+            } elseif (${{ matrix.pyver }} -eq "3.12") {
+              python -m pip install https://github.com/woct0rdho/triton-windows/releases/download/v3.2.0-windows.post9/triton-3.2.0-cp312-cp312-win_amd64.whl
+            }
           }
 
       - name: Build Wheel
@@ -105,7 +115,7 @@ jobs:
           $wheelname = $wheel.name.replace("sageattention-$packageVersion-","sageattention-$packageVersion+cu$cudaVersion"+"torch${{ matrix.torchver }}cxx11abiFALSE-")
           Move-Item $wheel.fullname ".\dist\$wheelname"
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: 'windows-wheels'
           path: ./dist/*.whl
